@@ -1,0 +1,74 @@
+#Write a program to reverse any three digit number and after that check whether they are equal or not.#
+
+Sub Digits()
+Dim Number As String
+Number = InputBox("enter the number", "whole number", 50)
+If Len(Number) <> 3 Then
+MsgBox "Invalid"
+ElseIf Len(Number) = 3 Then
+Reverse = StrReverse(Number)
+End If
+If Reverse = Number Then
+MsgBox "Equal"
+Else
+MsgBox "Not Equal"
+End If
+End Sub
+
+
+#If three sides of a triangle are entered through the keyboard. Write a program to check whether  the triangle is isosceles , equilateral or scalene triangle.#
+
+Sub Triangle()
+Dim S1 As Integer, S2 As Integer, S3 As Integer
+S1 = InputBox("Enter first side", "whole number", 0)
+S2 = InputBox("Enter second side", "whole number", 0)
+S3 = InputBox("Enter third side", "whole number", 0)
+If S1 = S2 And S2 = S3 Then
+MsgBox ("EQUILATERAL")
+ElseIf S1 = S2 Or S2 = S3 Or S1 = S3 Then
+MsgBox ("ISOSCELES")
+Else
+MsgBox ("SCALENE")
+End If
+End Sub
+
+#Write a program to find the greatest number out of the three numbers entered through the keyboard #
+
+Sub Greatest()
+Dim N1 As Integer, N2 As Integer, N3 As Integer
+N1 = InputBox("Enter N1", "whole number", 0)
+N2 = InputBox("Enter N2", "whole number", 0)
+N3 = InputBox("Enter N3", "whole number", 0)
+If N1 > N2 And N1 > N3 Then
+MsgBox (" N1 is Greatest ")
+ElseIf N2 > N1 And N2 > N3 Then
+MsgBox ("N2 is Greatest")
+Else
+MsgBox ("N3 is Greatest")
+End If
+End Sub
+
+#The wind chill index (WCI) is calculated from the wind speed v in miles per hour and the temperature t in Fahrenheit. Three formulas are used, depending on the wind speed:
+if (0 <= v <= 4) then WCI = t
+if (v >=45) then WCI = 1.6t - 55
+otherwise, WCI = 91.4 + (91.4 - t)(0.0203v - 0.304(v)1/2 - 0.474). 
+Write a program that can calculate the wind chill index.#
+
+
+Sub Wind_Chill_Index()
+Dim WCI As Integer, v As Integer, t As Integer
+v = InputBox(" Enter wind speed", "whole number", 0)
+t = InputBox("Enter temperature", "whole number", 0)
+If 0 <= v <= 4 Then
+WCI = t
+MsgBox WCI
+ElseIf v >= 4 Then
+WCI = 1.6 * t - 55
+MsgBox WCI
+Else
+WCI = 91.4 + (91.4 - t) * (0.0203 * v - (0.304 * v * 0.5) - 0.474)
+MsgBox WCI
+End If
+End Sub
+
+
