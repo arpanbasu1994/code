@@ -1,0 +1,54 @@
+HB <- read.csv("hotel_bookings.csv")
+
+
+unique( HB$country )
+library(sqldf)
+RH<- sqldf("select *
+           from HB
+           where hotel= 'Resort Hotel'")
+CH<- sqldf("select *
+           from HB
+           where hotel= 'City Hotel'")
+Q1.1<-sqldf("select count(adults),country
+      from RH
+      group by country")
+Q1.2 <- sqldf("select count(adults),country
+      from CH
+      group by country")
+
+Q4.1<-sqldf("select arrival_date_month, count(adults)
+      from RH
+      group by arrival_date_month
+      order by count(adults) DESC")
+Q4.2<- sqldf("select arrival_date_month, count(adults)
+      from CH
+      group by arrival_date_month
+      order by count(adults) DESC")
+
+
+Q2.1<-aggregate(RH$adr,list(RH$assigned_room_type),mean)
+Q2.2<-aggregate(CH$adr,list(CH$assigned_room_type),mean)
+
+Q3.1<-aggregate(RH$adr,list(RH$arrival_date_year), sd)
+Q3.2<-aggregate(CH$adr,list(CH$arrival_date_year), sd)
+
+Q5.1<-RH<-within(RH, total_nights <-stays_in_weekend_nights +stays_in_week_nights )
+mean(RH$total_nights)
+Q5.2<-CH<-within(CH, total_nights <-stays_in_weekend_nights +stays_in_week_nights )
+mean(CH$total_nights)
+
+Q6.1<-sqldf("select count(market_segment), market_segment
+      from RH
+      group by market_segment")
+Q6.2<- sqldf("select count(market_segment), market_segment
+      from CH
+      group by market_segment")
+
+
+Q7.1<-sum(RH$is_canceled)
+Q7.2<-sum(CH$is_canceled)
+
+Q8.1<-aggregate(RH$is_canceled, list(RH$arrival_date_month), sum)
+arrange(Q8.1, desc(x))
+Q8.2<- aggregate(CH$is_canceled, list(CH$arrival_date_month), sum)
+arrange(Q8.2, desc(x))
