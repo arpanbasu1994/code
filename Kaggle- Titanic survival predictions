@@ -1,0 +1,55 @@
+train<-read.csv("F:\\Kaggle\\Titanic competition\\train.csv")
+test<-read.csv("F:\\Kaggle\\Titanic competition\\test.csv")
+train1<-train
+summary(train1)
+as.data.frame(colMeans(is.na(train1)))
+train1[is.na(train1$Age),"Age"]=median(train1$Age,na.rm = TRUE)
+train1$Sex<-as.factor(train1$Sex)
+class(train1$Sex)
+summary(aov(formula = Survived ~ Sex, data=train1))
+train1$Sex<-ifelse(train1$Sex == "male",0,1)
+train1$Sex<-ifelse(train1$Sex == "0","male","female")
+
+train1$Survived<-as.factor(train1$Survived)
+summary(chisq.test(train1$Survived,train1$Age))
+train1$Pclass<-as.factor(train1$Pclass)
+train1$Pclass<-as.numeric(train1$Pclass)
+train1$Pclass<-ifelse(train1$Pclass == "1",0,ifelse(train1$Pclass=="2",1,2))
+train1$Pclass<-ifelse(train1$Pclass == "0",1,ifelse(train1$Pclass=="1",2,3))
+
+boxplot(train1$Fare)
+logit<-glm(Survived ~ Pclass + Sex + Age + SibSp + Parch + Fare, data=train1, family = binomial())
+summary(logit)
+
+class(train1$Pclass)
+summary(train1$Pclass)
+
+logit<-glm(Survived ~ Pclass + Sex + Age + SibSp, data=train1, family = binomial())
+summary(logit)
+
+vif(logit)
+
+varImp(logit)
+
+train1$score<-predict(logit,newdata = train1,type = "response")
+train1$prediction<-ifelse(train1$score>=0.6,1,0)
+train1$prediction
+
+roccurve<-roc(response=train1$Survived, predictor=predict.survived, 
+              levels=rev(levels(train1$Survived)))
+
+confusionMatrix(logit)
+table(predclass)
+plot(roccurve)
+test$score<-predict(logit,type = "response",newdata = test)
+predict.survived
+test$predicted<-ifelse(test$score>=0.6,1,0)
+survived<-test$predicted
+test<-cbind.data.frame(test$predicted)
+table(factor(test$predicted), factor(test$survived))
+test$survived
+mean(test$predicted !=test$survived)
+test<-c("PassengerId","predicted")
+test1 <- data.frame(test$PassengerId,test$predicted)
+setwd("F:\\Kaggle\\Titanic competition")
+write.csv(test1,file = "test1.csv")
